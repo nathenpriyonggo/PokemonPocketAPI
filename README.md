@@ -129,5 +129,7 @@ docker logs ptcgp-db                # view Postgres logs
 
 # API
 - GET / - Test Route
-- POST /api/users - Post a body message (username, email, password)
 
+### Roles
+- GET /roles
+- POST /role

@@ -11,25 +11,38 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+
 // Test route
 app.get("/", (req, res) => {
   res.json({ message: "PTCGP backend running ✅" });
 });
 
-// Example API route: get all users
-app.get("/api/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
+// -------- ROLES --------
+app.get("/roles", async (req, res) => {
+  try {
+    const roles = await prisma.role.findMany({
+      select: { name: true }
+    });
+    res.json(roles);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Could not get roles." });
+  }
 });
 
-// Example API route: create user
-app.post("/api/users", async (req, res) => {
-  const { username, email, password } = req.body;
-  const user = await prisma.user.create({
-    data: { username, email, password },
-  });
-  res.json(user);
-});
+app.post("/role", async (req, res) => {
+  try 
+  {
+    const { name } = req.body;
+    const role = await prisma.role.create({ data: { name } });
+    res.json(role)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Could not create role."});
+  }
+})
+
+
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
