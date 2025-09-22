@@ -7,56 +7,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// User Data
+// Roles
 model Role {
   id   Int    @id @default(autoincrement())
   name String @unique
-  User User[] // All decks created by this user
+
+  users User[]
 }
 
+// Users
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password Int
-  roleID   Int
+  id           Int     @id @default(autoincrement())
+  email        String  @unique
+  name         String?
+  passwordHash String
+  roleID       Int
+  role         Role    @relation(fields: [roleID], references: [id])
 
-  role  Role   @relation(fields: [roleID], references: [id])
-  decks Deck[]
-}
-
-model Deck {
-  id     Int    @id @default(autoincrement())
-  name   String
-  userId Int
-  user   User   @relation(fields: [userId], references: [id])
-  cards  Card[]
-}
-
-model Type {
-  id   Int    @id @default(autoincrement())
-  name String
-  Type_typeToType Card[] @relation("Card_typeToType")
-  Type_weaknessToType Card[] @relation("Card_weaknessToType")
-}
-
-model Card {
-  id            Int     @id @default(autoincrement())
-  name          String
-  stage         String
-  previousState String?
-  nextStage     String?
-  pack          String
-  gen           Int
-  hp            Int
-  retreatCost   Int
-  rarity        Int
-
-  type          Int
-  weakness      Int
-
-  Card_typeToType Type @relation("Card_typeToType", fields: [type], references: [id])
-  Card_weaknessToType Type @relation("Card_weaknessToType", fields: [weakness], references: [id])
-
-  decks Deck[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
