@@ -32,7 +32,7 @@ export default function Dashboard() {
         setUser(data);
       } catch (err) {
         console.error(err);
-        navigate("/login");
+        navigate("/");
       }
     }
 
