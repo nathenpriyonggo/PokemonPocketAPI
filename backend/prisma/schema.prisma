@@ -9,21 +9,116 @@ generator client {
 
 // Roles
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
 
   users User[]
 }
 
 // Users
 model User {
-  id           Int     @id @default(autoincrement())
-  email        String  @unique
-  name         String?
-  passwordHash String
-  roleID       Int
-  role         Role    @relation(fields: [roleID], references: [id])
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  roleID        Int
+  role          Role      @relation(fields: [roleID], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  decks         Deck[]
+}
+
+// Decks
+model Deck {
+  id          Int       @id @default(autoincrement())
+  userID      Int
+  user        User      @relation(fields: [userID], references: [id])
+  title       String?
+  description String?   @db.Text
+  is_public   Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  deckCards   DeckCard[]
+}
+
+// Deck Cards
+model DeckCard {
+  id      Int   @id @default(autoincrement())
+  deckID  Int
+  deck    Deck  @relation(fields: [deckID], references: [id])
+  cardID  Int
+  card    Card  @relation(fields: [cardID], references: [id])
+  count   Int
+  slot    Int?
+}
+
+// Cards
+model Card {
+  id              Int       @id @default(autoincrement())
+  cardIdentifier  String    @unique
+  name            String
+  typeID          Int
+  type            Type      @relation(fields: [typeID], references: [id])
+  abilityID       Int
+  ability         Ability   @relation(fields: [abilityID], references: [id])
+  move1ID         Int
+  move1           Move?     @relation("CardMove1", fields: [move1ID], references: [id])
+  move2ID         Int
+  move2           Move?     @relation("CardMove2", fields: [move2ID], references: [id])
+  retreatCost     Int
+  gen             Int
+  packs           String    @db.Text
+  hp              Int
+  is_ex           Boolean   @default(false)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  deckCards DeckCard[]
+}
+
+// Types
+model Type {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+
+  cards Card[]
+}
+
+// Abilities
+model Ability {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  statusID    Int?
+  status      Status?   @relation(fields: [statusID], references: [id])
+  description String  @db.Text
+
+  cards       Card[]
+}
+
+// Moves
+model Move {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  damage      Int
+  cost        Int[]
+  statusID    Int?
+  status      Status?   @relation(fields: [statusID], references: [id])
+  description String    @db.Text
+
+  cards1      Card[]  @relation("CardMove1")
+  cards2      Card[]  @relation("CardMove2")
+}
+
+// Status
+model Status {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+
+  moves     Move[]
+  abilities Ability[]
 }
