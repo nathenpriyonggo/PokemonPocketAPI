@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import roleRoutes from "./routes/roleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import typeRoutes from "./routes/typeRoutes.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/", roleRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);
+app.use("/", typeRoutes);
 
 
 
