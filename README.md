@@ -16,7 +16,6 @@ Make sure you have installed:
 
 It is recommended to have Postman for API testing, Docker app for GUI, and Github Desktop if you are novice to Git.
 
-
 ## 2. Backend Setup
 
 ### a. Navigate to backend folder
@@ -44,9 +43,9 @@ Dependencies include:
 docker run --name ptcgp-db -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=ptcgp -p 5432:5432 -d postgres
 ```
 
-- Username: `postgres`  
-- Password: `pass`  
-- Database: `ptcgp`  
+- Username: `postgres`
+- Password: `pass`
+- Database: `ptcgp`
 - Port: `5432`
 
 ### d. Configure `.env`
@@ -78,8 +77,6 @@ npm run dev
 
 - Server runs at [http://localhost:4000](http://localhost:4000)
 
-
-
 ## 3. Frontend Setup
 
 ### a. Navigate to frontend folder
@@ -101,7 +98,6 @@ npm run dev
 ```
 
 - Vite dev server runs at [http://localhost:5173](http://localhost:5173)
-
 
 # Commands
 
@@ -128,8 +124,17 @@ docker logs ptcgp-db                # view Postgres logs
 ```
 
 # API
+
 - GET / - Test Route
 
 ### Roles
+
 - GET /roles
 - POST /role
+
+# ENV
+
+DATABASE_URL="postgresql://postgres:pass@localhost:5432/ptcgp"
+JWT_SECRET="your-super-secret-jwt-key-change-this-in-production-6d14e2f40e1e7183545a9ab7594ea9d1a08cc4f490b5d29e71db1fe020e01a5b"
+NODE_ENV="development"
+FRONTEND_URL="http://localhost:5173
