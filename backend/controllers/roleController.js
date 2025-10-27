@@ -26,7 +26,7 @@ export const getRoles = async (req, res) => {
 export const postRole = async (req, res) => {
     try {
         const { name } = req.body;
-        const roleName = name ? name.trim().toUpperCase() : null;
+        const roleName = name ? name.trim() : null;
 
         // Check for empty string
         if (!roleName) {
